@@ -1,10 +1,10 @@
 // ==UserScript==
-// @name         Google Search Shortcuts for Vim User
-// @description  Navigate Google Search with Custom Shortcuts
-// @namespace    https://github.com/channprj/google-search-shortcuts
+// @name         Google Search Navigator
+// @description  Navigate google search with custom shortcuts
+// @namespace    https://github.com/channprj/google-search-navigator
 // @icon         https://user-images.githubusercontent.com/1831308/60544915-c043e700-9d54-11e9-9eb0-5c80c85d3a28.png
 // @version      0.2
-// @author       CHANN
+// @author       channprj
 // @run-at       document-end
 // @include      http*://*.google.tld/search*
 // @include      http*://*.google.*/search*
