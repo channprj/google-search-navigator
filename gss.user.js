@@ -3,7 +3,7 @@
 // @description  Navigate Google Search with Custom Shortcuts
 // @namespace    https://github.com/channprj/google-search-shortcuts
 // @icon         https://user-images.githubusercontent.com/1831308/60544915-c043e700-9d54-11e9-9eb0-5c80c85d3a28.png
-// @version      0.1
+// @version      0.2
 // @author       CHANN
 // @run-at       document-end
 // @include      http*://*.google.tld/search*
@@ -30,8 +30,10 @@ observer.observe(document.body, {
 });
 
 
-// default selection
-document.getElementById('search').getElementsByClassName('g')[0].getElementsByTagName('a')[0].focus()
+// init selection
+const initSelection = document.getElementById('search').getElementsByClassName('g')[0];
+initSelection.getElementsByTagName('a')[0].focus();
+initSelection.style.cssText = 'padding-left: 8px; border-left: 4px solid red;';
 
 // focus on searchbox
 const searchInputElement = document.querySelector('div input.gsfi');
@@ -49,7 +51,7 @@ window.addEventListener('keyup', (event) => {
 
 // focus on results
 // TODO: focus pagination after results
-let focusIndex = -1;
+let focusIndex = 0;
 
 window.addEventListener('keypress', (event) => {
   event = event || window.event;
@@ -59,19 +61,23 @@ window.addEventListener('keypress', (event) => {
   if (searchInputElement !== document.activeElement) {
     if (keyCode === 'KeyJ' || keyCode === 'ArrowDown') {
       if (focusIndex < results.length-1) {
+        results[focusIndex].style.cssText = ''
         focusIndex += 1;
       }
 
       results[focusIndex].getElementsByTagName('a')[0].focus();
+      results[focusIndex].style.cssText = 'padding-left: 8px; border-left: 4px solid red;'
       return;
     }
 
     if (keyCode === 'KeyK' || keyCode === 'ArrowUp') {
+      results[focusIndex].style.cssText = ''
       if (focusIndex > 0) {
         focusIndex -= 1;
       }
 
       results[focusIndex].getElementsByTagName('a')[0].focus();
+      results[focusIndex].style.cssText = 'padding-left: 8px; border-left: 4px solid red;'
       return;
     }
   }
