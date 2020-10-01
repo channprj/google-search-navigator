@@ -2,4 +2,4 @@
 
 > WIP 
 
-Navigate google search results like a pro.
+Navigate google search results using your keyboard.
