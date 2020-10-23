@@ -80,6 +80,16 @@ window.addEventListener('keypress', (event) => {
       results[focusIndex].style.cssText = 'padding-left: 8px; border-left: 4px solid red;'
       return;
     }
+
+    if (keyCode === 'KeyL') {
+      document.getElementById('pnnext')?.click();
+      return;
+    }
+
+    if (keyCode === 'KeyH') {
+      document.getElementById('pnprev')?.click();
+      return;
+    }
   }
 });
 
