@@ -11,7 +11,7 @@
 // ==/UserScript==
 
 const styles = {
-  highlight: "padding-left: 8px; border-left: 4px solid red;",
+  highlight: "padding-left: 8px; margin-left: -12px; border-left: 4px solid red;",
   normal: "",
 };
 
