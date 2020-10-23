@@ -10,6 +10,11 @@
 // @include      http*://*.google.*/search*
 // ==/UserScript==
 
+const styles = {
+  highlight: "padding-left: 8px; border-left: 4px solid red;",
+  normal: "",
+};
+
 function moveCursorToEnd(element) {
   element.focus();
   if (element.setSelectionRange) {
@@ -33,7 +38,7 @@ observer.observe(document.body, {
 // init selection
 const initSelection = document.getElementById('search').getElementsByClassName('g')[0];
 initSelection.getElementsByTagName('a')[0].focus();
-initSelection.style.cssText = 'padding-left: 8px; border-left: 4px solid red;';
+initSelection.style.cssText = styles.highlight;
 
 // focus on searchbox
 const searchInputElement = document.querySelector('div input.gsfi');
@@ -61,23 +66,23 @@ window.addEventListener('keypress', (event) => {
   if (searchInputElement !== document.activeElement) {
     if (keyCode === 'KeyJ' || keyCode === 'ArrowDown') {
       if (focusIndex < results.length-1) {
-        results[focusIndex].style.cssText = ''
+        results[focusIndex].style.cssText = styles.normal;
         focusIndex += 1;
       }
 
       results[focusIndex].getElementsByTagName('a')[0].focus();
-      results[focusIndex].style.cssText = 'padding-left: 8px; border-left: 4px solid red;'
+      results[focusIndex].style.cssText = styles.highlight;
       return;
     }
 
     if (keyCode === 'KeyK' || keyCode === 'ArrowUp') {
-      results[focusIndex].style.cssText = ''
+      results[focusIndex].style.cssText = styles.normal;
       if (focusIndex > 0) {
         focusIndex -= 1;
       }
 
       results[focusIndex].getElementsByTagName('a')[0].focus();
-      results[focusIndex].style.cssText = 'padding-left: 8px; border-left: 4px solid red;'
+      results[focusIndex].style.cssText = styles.highlight;
       return;
     }
   }
