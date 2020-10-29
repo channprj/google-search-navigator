@@ -5,3 +5,5 @@
 > WIP 
 
 Navigate google search results like a pro.
+
+<img src="https://i.imgur.com/rtccmMz.gif" alt="Example foobar search" width="480px">
