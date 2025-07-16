@@ -11,7 +11,8 @@
 // ==/UserScript==
 
 const styles = {
-  highlight: "padding-left: 8px; margin-left: -12px; border-left: 4px solid red;",
+  highlight:
+    "padding-left: 8px; margin-left: -12px; border-left: 4px solid red;",
   normal: "",
 };
 
@@ -26,28 +27,28 @@ function moveCursorToEnd(element) {
 }
 
 // work in progress...
-const observer = new MutationObserver(mutations => {
-});
+const observer = new MutationObserver((mutations) => {});
 
 observer.observe(document.body, {
   childList: true,
-  subtree: true
+  subtree: true,
 });
 
-
 // init selection
-const initSelection = document.getElementById('search').getElementsByClassName('g')[0];
-initSelection.getElementsByTagName('a')[0].focus();
+const initSelection = document
+  .getElementById("search")
+  .getElementsByClassName("g")[0];
+initSelection.getElementsByTagName("a")[0].focus();
 initSelection.style.cssText = styles.highlight;
 
 // focus on searchbox
-const searchInputElement = document.querySelector('div input.gsfi');
+const searchInputElement = document.querySelector("div input.gsfi");
 
-window.addEventListener('keyup', (event) => {
+window.addEventListener("keyup", (event) => {
   event = event || window.event;
   const keyCode = event.code;
 
-  if (keyCode === 'Slash') {
+  if (keyCode === "Slash") {
     moveCursorToEnd(searchInputElement);
 
     return;
@@ -58,46 +59,45 @@ window.addEventListener('keyup', (event) => {
 // TODO: focus pagination after results
 let focusIndex = 0;
 
-window.addEventListener('keypress', (event) => {
+window.addEventListener("keypress", (event) => {
   event = event || window.event;
 
   const keyCode = event.code;
-  const results = document.getElementById('search').getElementsByClassName('g');
+  const results = document.getElementById("search").getElementsByClassName("g");
   if (searchInputElement !== document.activeElement) {
-    if (keyCode === 'KeyJ' || keyCode === 'ArrowDown') {
-      if (focusIndex < results.length-1) {
+    if (keyCode === "KeyJ" || keyCode === "ArrowDown") {
+      if (focusIndex < results.length - 1) {
         results[focusIndex].style.cssText = styles.normal;
         focusIndex += 1;
       }
 
-      results[focusIndex].getElementsByTagName('a')[0].focus();
+      results[focusIndex].getElementsByTagName("a")[0].focus();
       results[focusIndex].style.cssText = styles.highlight;
       return;
     }
 
-    if (keyCode === 'KeyK' || keyCode === 'ArrowUp') {
+    if (keyCode === "KeyK" || keyCode === "ArrowUp") {
       results[focusIndex].style.cssText = styles.normal;
       if (focusIndex > 0) {
         focusIndex -= 1;
       }
 
-      results[focusIndex].getElementsByTagName('a')[0].focus();
+      results[focusIndex].getElementsByTagName("a")[0].focus();
       results[focusIndex].style.cssText = styles.highlight;
       return;
     }
 
-    if (keyCode === 'KeyL') {
-      document.getElementById('pnnext')?.click();
+    if (keyCode === "KeyL") {
+      document.getElementById("pnnext")?.click();
       return;
     }
 
-    if (keyCode === 'KeyH') {
-      document.getElementById('pnprev')?.click();
+    if (keyCode === "KeyH") {
+      document.getElementById("pnprev")?.click();
       return;
     }
   }
 });
-
 
 // const pagination = document.getElementById('navcnt').getElementsByTagName('tr')
 // pagination[0].children
