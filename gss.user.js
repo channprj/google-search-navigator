@@ -3,7 +3,7 @@
 // @description  Navigate google search with custom shortcuts
 // @namespace    https://github.com/channprj/google-search-navigator
 // @icon         https://user-images.githubusercontent.com/1831308/60544915-c043e700-9d54-11e9-9eb0-5c80c85d3a28.png
-// @version      0.4
+// @version      0.5
 // @author       channprj
 // @run-at       document-end
 // @include      http*://*.google.tld/search*
@@ -16,6 +16,11 @@ const styles = {
   normal: "",
 };
 
+// Selectors
+const resultElements = document.querySelectorAll(".MjjYud");
+const searchInputElement = document.querySelector("div textarea");
+const contentWrapper = document.querySelector("#rcnt");
+
 const moveCursorToEnd = (element) => {
   element.focus();
   if (element.setSelectionRange) {
@@ -26,7 +31,6 @@ const moveCursorToEnd = (element) => {
   }
 };
 
-// Helper functions for result navigation
 const isValidResultNode = (node) => {
   return node && node.childElementCount > 0 && node.offsetHeight > 0;
 };
@@ -83,21 +87,22 @@ const navigateToResult = (index, childNodes) => {
   }
 };
 
-const initializeFirstResult = (results) => {
-  if (results && results.length > 0) {
+const initializeFirstResult = (resultElements) => {
+  if (resultElements && resultElements.length > 0) {
     let firstValidIndex = 0;
     while (
-      firstValidIndex < results.length &&
-      !isValidResultNode(results[firstValidIndex])
+      firstValidIndex < resultElements.length &&
+      !isValidResultNode(resultElements[firstValidIndex])
     ) {
       firstValidIndex++;
     }
-    if (firstValidIndex < results.length) {
-      const firstLink = results[firstValidIndex].getElementsByTagName("a")[0];
+    if (firstValidIndex < resultElements.length) {
+      const firstLink =
+        resultElements[firstValidIndex].getElementsByTagName("a")[0];
       if (firstLink) {
         firstLink.focus();
       }
-      highlightResult(firstValidIndex, results);
+      highlightResult(firstValidIndex, resultElements);
       return firstValidIndex;
     }
   }
@@ -105,6 +110,14 @@ const initializeFirstResult = (results) => {
 };
 
 const handlePagination = (direction) => {
+  if (
+    document.activeElement.tagName === "INPUT" ||
+    document.activeElement.tagName === "TEXTAREA" ||
+    document.activeElement.contentEditable === "true"
+  ) {
+    return;
+  }
+
   const pageButton = document.getElementById(
     direction === "next" ? "pnnext" : "pnprev"
   );
@@ -123,63 +136,51 @@ observer.observe(document.body, {
   subtree: true,
 });
 
-// Search result items
-const results = document.querySelectorAll(".MjjYud");
-
 // Initialize with first valid result
-let focusIndex = initializeFirstResult(results);
-
-const searchInputElement = document.querySelector("div input.gsfi");
-
-// Focus searchbox when slash is pressed
-window.addEventListener("keyup", (event) => {
-  event = event || window.event;
-  const keyCode = event.code;
-
-  if (keyCode === "Slash") {
-    focusSearchInput(searchInputElement);
-    return;
-  }
-});
+let focusIndex = initializeFirstResult(resultElements);
 
 // TODO: Support nested rich lists (Image, Video, News, etc.)
 
 // TODO: Support paginator navigation
 
-window.addEventListener("keydown", (event) => {
+window.addEventListener("keyup", (event) => {
+  event.preventDefault();
   const keyCode = event.code;
 
-  if (searchInputElement !== document.activeElement) {
-    if (keyCode === "KeyJ" || keyCode === "ArrowDown") {
-      event.preventDefault();
-      clearHighlight(focusIndex, results);
-      focusIndex = findNextValidIndex(focusIndex, results);
-      highlightResult(focusIndex, results);
-      return;
-    }
+  if (keyCode === "KeyJ" || keyCode === "ArrowDown") {
+    clearHighlight(focusIndex, resultElements);
+    focusIndex = findNextValidIndex(focusIndex, resultElements);
+    highlightResult(focusIndex, resultElements);
+    return;
+  }
 
-    if (keyCode === "KeyK" || keyCode === "ArrowUp") {
-      event.preventDefault();
-      clearHighlight(focusIndex, results);
-      focusIndex = findPrevValidIndex(focusIndex, results);
-      highlightResult(focusIndex, results);
-      return;
-    }
+  if (keyCode === "KeyK" || keyCode === "ArrowUp") {
+    clearHighlight(focusIndex, resultElements);
+    focusIndex = findPrevValidIndex(focusIndex, resultElements);
+    highlightResult(focusIndex, resultElements);
+    return;
+  }
 
-    if (keyCode === "Enter") {
-      navigateToResult(focusIndex, results);
-      return;
-    }
+  if (keyCode === "Enter") {
+    navigateToResult(focusIndex, resultElements);
+    return;
+  }
 
-    if (keyCode === "KeyL" || keyCode === "ArrowRight") {
-      handlePagination("next");
-      return;
-    }
+  if (keyCode === "KeyL" || keyCode === "ArrowRight") {
+    handlePagination("next");
+    return;
+  }
 
-    if (keyCode === "KeyH" || keyCode === "ArrowLeft") {
-      handlePagination("prev");
-      return;
-    }
+  if (keyCode === "KeyH" || keyCode === "ArrowLeft") {
+    handlePagination("prev");
+    return;
+  }
+
+  if (keyCode === "Escape") {
+    contentWrapper.click();
+    searchInputElement.blur();
+    highlightResult(focusIndex, resultElements);
+    return;
   }
 });
 
