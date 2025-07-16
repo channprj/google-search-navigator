@@ -35,11 +35,9 @@ observer.observe(document.body, {
 });
 
 // init selection
-const initSelection = document
-  .getElementById("search")
-  .getElementsByClassName("g")[0];
-initSelection.getElementsByTagName("a")[0].focus();
-initSelection.style.cssText = styles.highlight;
+const results = document.getElementById("rso");
+results.childNodes[0].getElementsByTagName("a")[0].focus();
+results.childNodes[0].style.cssText = styles.highlight;
 
 // focus on searchbox
 const searchInputElement = document.querySelector("div input.gsfi");
@@ -63,27 +61,33 @@ window.addEventListener("keypress", (event) => {
   event = event || window.event;
 
   const keyCode = event.code;
-  const results = document.getElementById("search").getElementsByClassName("g");
   if (searchInputElement !== document.activeElement) {
     if (keyCode === "KeyJ" || keyCode === "ArrowDown") {
-      if (focusIndex < results.length - 1) {
-        results[focusIndex].style.cssText = styles.normal;
+      if (focusIndex < results.childNodes.length - 1) {
+        results.childNodes[focusIndex].style.cssText = styles.normal;
         focusIndex += 1;
       }
 
-      results[focusIndex].getElementsByTagName("a")[0].focus();
-      results[focusIndex].style.cssText = styles.highlight;
+      // results.childNodes[focusIndex].getElementsByTagName("a")[0].focus();
+      results.childNodes[focusIndex].style.cssText = styles.highlight;
       return;
     }
 
     if (keyCode === "KeyK" || keyCode === "ArrowUp") {
-      results[focusIndex].style.cssText = styles.normal;
+      results.childNodes[focusIndex].style.cssText = styles.normal;
       if (focusIndex > 0) {
         focusIndex -= 1;
       }
 
-      results[focusIndex].getElementsByTagName("a")[0].focus();
-      results[focusIndex].style.cssText = styles.highlight;
+      // results.childNodes[focusIndex].getElementsByTagName("a")[0].focus();
+      results.childNodes[focusIndex].style.cssText = styles.highlight;
+      return;
+    }
+
+    if (keyCode === "Enter") {
+      const selectedLink =
+        results.childNodes[focusIndex].getElementsByTagName("a")[0];
+      selectedLink.click();
       return;
     }
 
