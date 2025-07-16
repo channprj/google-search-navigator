@@ -16,7 +16,7 @@ const styles = {
   normal: "",
 };
 
-function moveCursorToEnd(element) {
+const moveCursorToEnd = (element) => {
   element.focus();
   if (element.setSelectionRange) {
     const len = element.value.length * 2;
@@ -24,7 +24,7 @@ function moveCursorToEnd(element) {
   } else {
     element.value = element.value;
   }
-}
+};
 
 // work in progress...
 const observer = new MutationObserver((mutations) => {});
@@ -34,14 +34,15 @@ observer.observe(document.body, {
   subtree: true,
 });
 
-// init selection
 const results = document.getElementById("rso");
+
+// Select first item
 results.childNodes[0].getElementsByTagName("a")[0].focus();
 results.childNodes[0].style.cssText = styles.highlight;
 
-// focus on searchbox
 const searchInputElement = document.querySelector("div input.gsfi");
 
+// Focus searchbox when slash is pressed
 window.addEventListener("keyup", (event) => {
   event = event || window.event;
   const keyCode = event.code;
@@ -53,10 +54,9 @@ window.addEventListener("keyup", (event) => {
   }
 });
 
-// focus on results
 // TODO: focus pagination after results
-let focusIndex = 0;
 
+let focusIndex = 0;
 window.addEventListener("keypress", (event) => {
   event = event || window.event;
 
@@ -68,7 +68,6 @@ window.addEventListener("keypress", (event) => {
         focusIndex += 1;
       }
 
-      // results.childNodes[focusIndex].getElementsByTagName("a")[0].focus();
       results.childNodes[focusIndex].style.cssText = styles.highlight;
       return;
     }
@@ -79,7 +78,6 @@ window.addEventListener("keypress", (event) => {
         focusIndex -= 1;
       }
 
-      // results.childNodes[focusIndex].getElementsByTagName("a")[0].focus();
       results.childNodes[focusIndex].style.cssText = styles.highlight;
       return;
     }
