@@ -9,7 +9,7 @@ Navigate google search results like a pro.
 
 ## How to use
 
-1. Install Tampermonkey or Violentmonkey browser extension.
+1. Install [Tampermonkey](https://www.tampermonkey.net/) browser extension.
 2. Click [Google Search Navigator](https://github.com/channprj/google-search-navigator/raw/refs/heads/master/gss.user.js) to install UserScript.
 3. Search Google and start navigating with the following shortcuts:
 
