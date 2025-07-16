@@ -69,6 +69,10 @@ window.addEventListener("keypress", (event) => {
       }
 
       results.childNodes[focusIndex].style.cssText = styles.highlight;
+      results.childNodes[focusIndex].scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
       return;
     }
 
@@ -79,6 +83,10 @@ window.addEventListener("keypress", (event) => {
       }
 
       results.childNodes[focusIndex].style.cssText = styles.highlight;
+      results.childNodes[focusIndex].scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
       return;
     }
 
