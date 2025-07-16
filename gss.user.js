@@ -34,6 +34,7 @@ observer.observe(document.body, {
   subtree: true,
 });
 
+// Search result items
 const results = document.getElementById("rso");
 
 // Select first item
@@ -57,14 +58,18 @@ window.addEventListener("keyup", (event) => {
 // TODO: focus pagination after results
 
 let focusIndex = 0;
-window.addEventListener("keypress", (event) => {
-  event = event || window.event;
-
+window.addEventListener("keydown", (event) => {
   const keyCode = event.code;
+
   if (searchInputElement !== document.activeElement) {
     if (keyCode === "KeyJ" || keyCode === "ArrowDown") {
+      event.preventDefault();
       if (focusIndex < results.childNodes.length - 1) {
         results.childNodes[focusIndex].style.cssText = styles.normal;
+        focusIndex += 1;
+      }
+
+      if (results.childNodes[focusIndex].childElementCount === 0) {
         focusIndex += 1;
       }
 
@@ -77,8 +82,13 @@ window.addEventListener("keypress", (event) => {
     }
 
     if (keyCode === "KeyK" || keyCode === "ArrowUp") {
+      event.preventDefault();
       results.childNodes[focusIndex].style.cssText = styles.normal;
       if (focusIndex > 0) {
+        focusIndex -= 1;
+      }
+
+      if (results.childNodes[focusIndex].childElementCount === 0) {
         focusIndex -= 1;
       }
 
@@ -97,12 +107,12 @@ window.addEventListener("keypress", (event) => {
       return;
     }
 
-    if (keyCode === "KeyL") {
+    if (keyCode === "KeyL" || keyCode === "ArrowRight") {
       document.getElementById("pnnext")?.click();
       return;
     }
 
-    if (keyCode === "KeyH") {
+    if (keyCode === "KeyH" || keyCode === "ArrowLeft") {
       document.getElementById("pnprev")?.click();
       return;
     }
