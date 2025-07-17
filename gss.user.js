@@ -37,7 +37,7 @@ const isValidResultNode = (node) => {
 
 const findNextValidIndex = (currentIndex, childNodes) => {
   let nextIndex = currentIndex + 1;
-  while (
+  if (
     nextIndex < childNodes.length &&
     !isValidResultNode(childNodes[nextIndex])
   ) {
@@ -48,13 +48,13 @@ const findNextValidIndex = (currentIndex, childNodes) => {
 
 const findPrevValidIndex = (currentIndex, childNodes) => {
   let prevIndex = currentIndex - 1;
-  while (prevIndex >= 0 && !isValidResultNode(childNodes[prevIndex])) {
+  if (prevIndex >= 0 && !isValidResultNode(childNodes[prevIndex])) {
     prevIndex--;
   }
   return prevIndex >= 0 ? prevIndex : currentIndex;
 };
 
-const highlightResult = (index, childNodes) => {
+const setHighlight = (index, childNodes) => {
   if (
     index >= 0 &&
     index < childNodes.length &&
@@ -74,7 +74,7 @@ const clearHighlight = (index, childNodes) => {
   }
 };
 
-const navigateToResult = (index, childNodes) => {
+const clickItem = (index, childNodes) => {
   if (
     index >= 0 &&
     index < childNodes.length &&
@@ -102,7 +102,7 @@ const initializeFirstResult = (resultElements) => {
       if (firstLink) {
         firstLink.focus();
       }
-      highlightResult(firstValidIndex, resultElements);
+      setHighlight(firstValidIndex, resultElements);
       return firstValidIndex;
     }
   }
@@ -150,19 +150,19 @@ window.addEventListener("keyup", (event) => {
   if (keyCode === "KeyJ" || keyCode === "ArrowDown") {
     clearHighlight(focusIndex, resultElements);
     focusIndex = findNextValidIndex(focusIndex, resultElements);
-    highlightResult(focusIndex, resultElements);
+    setHighlight(focusIndex, resultElements);
     return;
   }
 
   if (keyCode === "KeyK" || keyCode === "ArrowUp") {
     clearHighlight(focusIndex, resultElements);
     focusIndex = findPrevValidIndex(focusIndex, resultElements);
-    highlightResult(focusIndex, resultElements);
+    setHighlight(focusIndex, resultElements);
     return;
   }
 
   if (keyCode === "Enter") {
-    navigateToResult(focusIndex, resultElements);
+    clickItem(focusIndex, resultElements);
     return;
   }
 
@@ -179,7 +179,7 @@ window.addEventListener("keyup", (event) => {
   if (keyCode === "Escape") {
     contentWrapper.click();
     searchInputElement.blur();
-    highlightResult(focusIndex, resultElements);
+    setHighlight(focusIndex, resultElements);
     return;
   }
 });
