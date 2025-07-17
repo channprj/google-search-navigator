@@ -26,6 +26,15 @@ if (nestedResultElements.length > 0) {
 const searchInputElement = document.querySelector("div textarea");
 const contentWrapper = document.querySelector("#rcnt");
 
+const isTextElementFocused = () => {
+  const el = document.activeElement;
+  return (
+    el &&
+    ((el.tagName.toLowerCase() === "input" && el.type === "text") ||
+      el.tagName.toLowerCase() === "textarea")
+  );
+};
+
 const moveCursorToEnd = (element) => {
   element.focus();
   if (element.setSelectionRange) {
@@ -133,7 +142,7 @@ const focusSearchInput = (searchInput) => {
   moveCursorToEnd(searchInput);
 };
 
-// work in progress...
+// WIP
 const observer = new MutationObserver((mutations) => {});
 
 observer.observe(document.body, {
@@ -166,7 +175,7 @@ window.addEventListener("keyup", (event) => {
     return;
   }
 
-  if (keyCode === "Enter") {
+  if (keyCode === "Enter" && !isTextElementFocused()) {
     clickItem(focusIndex, resultElements);
     return;
   }
