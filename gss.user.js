@@ -17,7 +17,12 @@ const styles = {
 };
 
 // Selectors
-const resultElements = document.querySelectorAll(".MjjYud");
+let resultElements = document.querySelectorAll(".MjjYud");
+const nestedResultElements = document.querySelectorAll(".A6K0A");
+if (nestedResultElements.length > 0) {
+  resultElements = nestedResultElements;
+}
+
 const searchInputElement = document.querySelector("div textarea");
 const contentWrapper = document.querySelector("#rcnt");
 
