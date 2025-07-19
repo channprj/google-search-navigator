@@ -279,6 +279,21 @@
   const KeyboardHandler = {
     handleKeyEvent(event) {
       const keyCode = event.code;
+      console.log("Key pressed:", keyCode);
+
+      if (Utils.isTextElementFocused()) {
+        // Escape key
+        if (keyCode === "Escape") {
+          event.preventDefault();
+          const contentWrapper = domCache.contentWrapper;
+          if (contentWrapper) {
+            contentWrapper.click();
+          }
+          SearchInputHandler.blurSearchInput();
+          navigation.setHighlight(navigation.focusIndex);
+        }
+        return;
+      }
 
       // Navigation keys
       if (keyCode === "KeyJ" || keyCode === "ArrowDown") {
@@ -294,14 +309,14 @@
       }
 
       // Activation key
-      if (keyCode === "Enter" && !Utils.isTextElementFocused()) {
+      if (keyCode === "Enter") {
         event.preventDefault();
         // Check for Cmd+Enter (metaKey on macOS)
         if (event.metaKey) {
-          console.log("Cmd+Enter detected - opening in new tab");
+          console.log("Cmd+Enter detected: opening in new tab");
           navigation.openItem(true); // Open in new tab
         } else {
-          console.log("Enter detected - normal navigation");
+          console.log("Enter detected: normal navigation");
           navigation.openItem(false); // Normal navigation
         }
         return;
@@ -317,18 +332,6 @@
       if (keyCode === "KeyH" || keyCode === "ArrowLeft") {
         event.preventDefault();
         PaginationHandler.handlePagination("prev");
-        return;
-      }
-
-      // Escape key
-      if (keyCode === "Escape") {
-        event.preventDefault();
-        const contentWrapper = domCache.contentWrapper;
-        if (contentWrapper) {
-          contentWrapper.click();
-        }
-        SearchInputHandler.blurSearchInput();
-        navigation.setHighlight(navigation.focusIndex);
         return;
       }
 
