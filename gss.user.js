@@ -175,7 +175,7 @@
       }
     }
 
-    clickItem(index) {
+    clickItem(index, openInNewTab = false) {
       const elements = domCache.resultElements;
       if (
         index >= 0 &&
@@ -184,7 +184,12 @@
       ) {
         const selectedLink = elements[index].getElementsByTagName("a")[0];
         if (selectedLink) {
-          selectedLink.click();
+          if (openInNewTab) {
+            // Open in new background tab
+            window.open(selectedLink.href, "_blank");
+          } else {
+            selectedLink.click();
+          }
         }
       }
     }
@@ -221,8 +226,8 @@
       this.setHighlight(this.focusIndex);
     }
 
-    activateCurrentResult() {
-      this.clickItem(this.focusIndex);
+    openItem(openInNewTab = false) {
+      this.clickItem(this.focusIndex, openInNewTab);
     }
 
     refresh() {
@@ -291,7 +296,14 @@
       // Activation key
       if (keyCode === "Enter" && !Utils.isTextElementFocused()) {
         event.preventDefault();
-        navigation.activateCurrentResult();
+        // Check for Cmd+Enter (metaKey on macOS)
+        if (event.metaKey) {
+          console.log("Cmd+Enter detected - opening in new tab");
+          navigation.openItem(true); // Open in new tab
+        } else {
+          console.log("Enter detected - normal navigation");
+          navigation.openItem(false); // Normal navigation
+        }
         return;
       }
 
@@ -369,7 +381,7 @@
 
   // Event Listeners
   const setupEventListeners = () => {
-    window.addEventListener("keyup", KeyboardHandler.handleKeyEvent);
+    window.addEventListener("keydown", KeyboardHandler.handleKeyEvent);
 
     // Handle page unload
     window.addEventListener("beforeunload", () => {
