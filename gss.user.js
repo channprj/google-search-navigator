@@ -3,7 +3,7 @@
 // @description  Navigate google search with custom shortcuts
 // @namespace    https://github.com/channprj/google-search-navigator
 // @icon         https://user-images.githubusercontent.com/1831308/60544915-c043e700-9d54-11e9-9eb0-5c80c85d3a28.png
-// @version      0.8
+// @version      0.9
 // @author       channprj
 // @run-at       document-end
 // @include      http*://*.google.tld/search*
