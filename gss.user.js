@@ -3,7 +3,7 @@
 // @description  Navigate google search with custom shortcuts
 // @namespace    https://github.com/channprj/google-search-navigator
 // @icon         https://user-images.githubusercontent.com/1831308/60544915-c043e700-9d54-11e9-9eb0-5c80c85d3a28.png
-// @version      0.9
+// @version      0.10
 // @author       channprj
 // @run-at       document-end
 // @include      http*://*.google.tld/search*
@@ -277,21 +277,34 @@
 
   // Keyboard Event Handler
   const KeyboardHandler = {
-    handleKeyEvent(event) {
+    handleEscapeKey(event) {
+      event.preventDefault();
+      const contentWrapper = domCache.contentWrapper;
+      if (contentWrapper) {
+        contentWrapper.click();
+      }
+      SearchInputHandler.blurSearchInput();
+      navigation.setHighlight(navigation.focusIndex);
+    },
+
+    handleKeyupEvent(event) {
       const keyCode = event.code;
-      console.log("Key pressed:", keyCode);
+      console.log("keyup:", keyCode);
 
       if (Utils.isTextElementFocused()) {
         // Escape key
         if (keyCode === "Escape") {
-          event.preventDefault();
-          const contentWrapper = domCache.contentWrapper;
-          if (contentWrapper) {
-            contentWrapper.click();
-          }
-          SearchInputHandler.blurSearchInput();
-          navigation.setHighlight(navigation.focusIndex);
+          KeyboardHandler.handleEscapeKey(event);
         }
+        return;
+      }
+    },
+
+    handleKeydownEvent(event) {
+      const keyCode = event.code;
+      console.log("keydown:", keyCode);
+
+      if (Utils.isTextElementFocused()) {
         return;
       }
 
@@ -384,7 +397,8 @@
 
   // Event Listeners
   const setupEventListeners = () => {
-    window.addEventListener("keydown", KeyboardHandler.handleKeyEvent);
+    window.addEventListener("keyup", KeyboardHandler.handleKeyupEvent);
+    window.addEventListener("keydown", KeyboardHandler.handleKeydownEvent);
 
     // Handle page unload
     window.addEventListener("beforeunload", () => {
