@@ -49,3 +49,4 @@ The userscript provides keyboard shortcuts for Google search:
 ## Testing
 
 Manual testing required on Google search pages with Tampermonkey installed. No automated test suite exists.
+
